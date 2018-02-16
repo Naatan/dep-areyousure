@@ -87,7 +87,25 @@ func getDependencies(rootPkgName string) ([]string, []string) {
 		indirect = walkDependencies(pkg.Deps)
 	}
 
+	direct = unique(direct, []string{})
+	indirect = unique(indirect, direct)
+
 	return direct, indirect
+}
+
+func unique(slice []string, secondarySlice []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+	for _, entry := range secondarySlice {
+		keys[entry] = true
+	}
+	for _, entry := range slice {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return list
 }
 
 func getStats(rootPkgName string) *GoSearchPackage {
