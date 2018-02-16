@@ -24,9 +24,9 @@ type GoSearchPackage struct {
 }
 
 func main() {
-	isGet := flag.Bool("get", false, "")
-	flag.Parse()
+	forwardGet()
 
+	flag.Parse()
 	pkg := flag.Arg(0)
 
 	if pkg == "" {
@@ -64,15 +64,9 @@ func main() {
 		}
 	}
 
-	if *isGet {
-		fmt.Println("Forwarding your request to `go get` ..")
-		fmt.Println()
-		forwardGet()
-	} else {
-		fmt.Println("Forwarding your request to `dep ensure` ..")
-		fmt.Println()
-		forwardDep()
-	}
+	fmt.Println("Forwarding your request to `dep ensure` ..")
+	fmt.Println()
+	forwardDep()
 }
 
 func getDependencies(rootPkgName string) ([]string, []string) {
@@ -199,11 +193,14 @@ func forwardDep() {
 }
 
 func forwardGet() {
-	args := os.Args[2:]
+	fmt.Println("Ensuring dependencies are on our GOPATH..")
+	args := os.Args[1:]
 	args = append([]string{"get"}, args...)
 	cmd := exec.Command("go", args...)
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
 	err := cmd.Run()
+	fmt.Println()
+
 	if err != nil {
 		log.Fatal(err)
 	}

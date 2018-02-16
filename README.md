@@ -1,4 +1,4 @@
-This is a functional proof of concept wrapper for `dep ensure -add` and `go get` which primarily detects the number of
+This is a functional proof of concept wrapper for `dep ensure -add` which primarily detects the number of
 third party dependencies for a package and asks for confirmation if this number exceeds 2 packages.
 
 It will also print some additional information about the package provided by the go-search.org api.
@@ -10,6 +10,5 @@ Usage:
 
 ```
 go get github.com/Naatan/dep-areyousure
-dep-areyousure github.com/spf13/cobra/cobra # dep ensure
-dep-areyousure -get github.com/spf13/cobra/cobra # go get
+dep-areyousure github.com/spf13/cobra/cobra 
 ```
